@@ -107,13 +107,13 @@ class DrawShape:
         turtle.colormode(255)
         for i in range(10):
             num_sides = 0
-            if choice == 1 or choice == 5:
+            if choice == 1:
                 num_sides = 3
-            elif choice == 2 or choice == 6:
+            elif choice == 2:
                 num_sides = 4
-            elif choice == 3 or choice == 7:
+            elif choice == 3:
                 num_sides = 4
-            elif choice == 4 or choice == 8:
+            elif choice == 4:
                 num_sides = random.randint(3, 5)
             size = random.randint(50, 150)
             orientation = random.randint(0, 90)
@@ -122,16 +122,35 @@ class DrawShape:
             color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
             self.shape_list.append(Shape(num_sides, size, orientation, location, color, border_size))
 
-            reduction_ratio = 0.618
-            size *= reduction_ratio
+            if choice == 5:
+                num_sides = 3
+            elif choice == 6:
+                num_sides = 4
+            elif choice == 7:
+                num_sides = 4
+            elif choice == 8:
+                num_sides = random.randint(3, 5)
+            self.shape_list.append(Shape(num_sides, size, orientation, location, color, border_size))
+            reduction_ratio_1 = 0.618
+            reduction_ratio_2 = 0.420
+            first_smaller_size = size * reduction_ratio_1
+            second_smaller_size = size * reduction_ratio_2
             turtle.penup()
-            turtle.forward(size*(1-reduction_ratio)/2)
+            turtle.forward(size*(1-reduction_ratio_1)/2)
             turtle.left(90)
-            turtle.forward(size*(1-reduction_ratio)/2)
+            turtle.forward(size*(1-reduction_ratio_1)/2)
             turtle.right(90)
             location[0] = turtle.pos()[0]
             location[1] = turtle.pos()[1]
-            self.shape_list.append(Shape(num_sides, size, orientation, location, color, border_size))
+            self.shape_list.append(Shape(num_sides, first_smaller_size, orientation, location, color, border_size))
+            turtle.penup()
+            turtle.forward(size*(1-reduction_ratio_2)/2)
+            turtle.left(90)
+            turtle.forward(size*(1-reduction_ratio_2)/2)
+            turtle.right(90)
+            location[0] = turtle.pos()[0]
+            location[1] = turtle.pos()[1]
+            self.shape_list.append(Shape(num_sides, second_smaller_size, orientation, location, color, border_size))
 
     def run(self):
         while True:
@@ -139,7 +158,6 @@ class DrawShape:
             for i in range(10):
                 self.shape_list[i].draw()
             turtle.update()
-        # hold the window; close it by clicking the window close 'x' mark
         turtle.done()
 
 
